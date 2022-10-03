@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+
+{% block title %}
+Cargar
+{% endblock %}
+
+{% block inicio %}
+
+    {% for i in object_list %}
+
+        Nombre del libro: {{ i.nombre_libro }}
+        <br>
+        <br>
+
+    {% endfor %}
+
+{% endblock %}

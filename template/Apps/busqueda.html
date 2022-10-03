@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+
+{% block title %}
+Buscar
+{% endblock %}
+
+{% block inicio %}
+
+    {% for i in buscar %}
+
+        Nombre del libro: {{ i.nombre_libro }}
+        <br>
+        <br>
+
+    {% endfor %}
+
+{% endblock %}
+
+
