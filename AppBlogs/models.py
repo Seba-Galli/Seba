@@ -16,3 +16,7 @@ class Busqueda(models.Model):
 
     def __str__(self):
         return f"Libro: {self.nombre_libro}"
+
+class BusquedaFiltrada(models.Model):
+    nombre_libro = models.CharField(max_length=20)
+    nombre_autor = models.CharField(max_length=20)

@@ -10,6 +10,10 @@ Cargar
 
         Nombre del libro: {{ i.nombre_libro }}
         <br>
+        Nombre del autor: {{ i.nombre_autor }}
+        <a href="{% url 'AppEliminarLibro' i.nombre_autor %}">-X-</a>
+        <a href="{% url 'AppEditarLibro' i.nombre_libro %}"> Editar</a>
+        <br>
         <br>
 
     {% endfor %}

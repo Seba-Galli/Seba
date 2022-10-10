@@ -4,9 +4,13 @@ from .forms import *
 from .models import *
 from django.contrib import messages
 import django
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
+
 
 def editar(request, nombre_libro):
-    libro_editar = Busqueda.objects.get(nombre_libro=nombre_libro)
+    libro_editar = BusquedaFiltrada.objects.get(nombre_libro=nombre_libro)
 
     if request.method == 'POST':
         mi_formulario = BusquedaLibroForm(request.POST)
@@ -16,6 +20,7 @@ def editar(request, nombre_libro):
             data = mi_formulario.cleaned_data
 
             libro_editar.nombre_libro = data.get('nombre_libro')
+            libro_editar.nombre_autor = data.get('nombre_autor')
             try:
                 libro_editar.save()
             except django.db.utils.IntegrityError:
@@ -26,49 +31,86 @@ def editar(request, nombre_libro):
     contexto = {
         'form': BusquedaLibroForm(
             initial={
-                "nombre": libro_editar.nombre_libro,
+                "nombre_libro": libro_editar.nombre_libro,
+                "nombre_autor": libro_editar.nombre_autor
             }
         ),
         'titulo_form': 'Formulario',
         'boton_envio': 'Crear'
     }
 
-    return render(request, 'base_formulario.html', contexto)
+    return render(request, 'Apps/cargar_form.html', contexto)
 
+
+def eliminar_autor(request, nombre_autor):
+    autor_eliminar = BusquedaFiltrada.objects.get(nombre_autor=nombre_autor)
+    autor_eliminar.delete()
+
+    messages.info(request, f"El autor {autor_eliminar} fue eliminado")
+
+    return redirect("AppCargar")
+
+
+def busqueda_libro_post(request):
+
+    nombre_libro = request.GET.get('nombre_libro')
+
+    buscar = BusquedaFiltrada.objects.filter(nombre_libro__icontains=nombre_libro)
+
+    contexto = {
+        'buscar': buscar
+     }
+
+    return render(request, "Apps/busqueda.html", contexto)
+
+
+def buscar_formulario(request):
+
+    contexto = {
+        'form': BusquedaLibroForm(),
+        'titulo_form': 'Buscar Libro',
+        'boton_envio': 'Buscar'
+    }
+
+    return render(request, 'Apps/busqueda_libro.html', contexto)
+
+@login_required
 def cargar_formulario(request):
 
     if request.method == "POST":
-        mi_formulario = BusquedaForm(request.POST)
+        mi_formulario = BusquedaLibroForm(request.POST)
 
         if mi_formulario.is_valid():
         
             data = mi_formulario.cleaned_data
 
-            cargar = Busqueda(nombre_libro=data.get('nombre_libro'), nombre_autor=data.get('nombre_autor'), nombre_editorial=data.get('nombre_editorial'), descripcion=data.get('descripcion'))
+            libro = BusquedaFiltrada(nombre_libro=data.get('nombre_libro'), nombre_autor=data.get('nombre_autor'))
             
-            cargar.save()
+            libro.save()
 
             return redirect('AppCargar')
 
     contexto = {
-        'form': BusquedaForm(),
-        'titulo_form': 'Cargar Libro Formulario',
+        'form': BusquedaLibroForm(),
+        'titulo_form': 'Cargar Libro',
         'boton_envio': 'Crear'
     }
 
     return render(request, "base_formulario.html", contexto)
 
-def eliminar_libro(request, nombre_libro):
-    libro_eliminar = Busqueda.objects.get(nombre_libro=nombre_libro)
-    libro_eliminar.delete()
 
-    messages.info(request, f"El libro {libro_eliminar} fue eliminado")
+def inicio(request):
+    return render(request, 'index.html')
 
-    return redirect("AppCargar")
+
+class CargarList(LoginRequiredMixin, ListView):
+    model = BusquedaFiltrada
+    template_name = 'Apps/cargar.html'
+
 
 def cargadas(request):
 
-    cargar = Busqueda.objects.all()
+    cargar = BusquedaFiltrada.objects.all()
             
     contexto = {
         'object_list': cargar
@@ -76,29 +118,3 @@ def cargadas(request):
 
     return render(request,"Apps/cargar.html", contexto)
 
-
-def buscar_formulario(request):
-
-    buscar = Busqueda.objects.all()
-     
-    contexto = {
-        'buscar': buscar
-    }
-
-    return render(request,"Apps/buscar_form.html", contexto)
-
-def busquedas(request):
-
-        nombre_libro = request.GET.get('nombre_libro')
-
-        buscar = Busqueda.objects.filter(nombre_libro__icontains=nombre_libro)
-
-        contexto = {
-            'buscar': buscar
-        }
-
-        return render(request, "Apps/busqueda.html", contexto)
-
-
-def inicio(request):
-    return render(request, 'index.html')

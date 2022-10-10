@@ -16,3 +16,7 @@ class CargarForm(forms.Form):
 
 class BusquedaLibroForm(forms.Form):
     nombre_libro = forms.CharField(max_length=20)
+
+class BusquedaLibroForm(forms.Form):
+    nombre_libro = forms.CharField(max_length=20)
+    nombre_autor = forms.CharField(max_length=20)
