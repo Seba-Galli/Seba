@@ -32,21 +32,21 @@ def editar(request, nombre_libro):
         'form': BusquedaLibroForm(
             initial={
                 "nombre_libro": libro_editar.nombre_libro,
-                "nombre_autor": libro_editar.nombre_autor
+                "nombre_autor": libro_editar.nombre_autor,
             }
         ),
-        'titulo_form': 'Formulario',
+        'nombre_form': 'Formulario',
         'boton_envio': 'Crear'
     }
 
-    return render(request, 'Apps/cargar_form.html', contexto)
+    return render(request, 'base_formulario.html', contexto)
 
 
 def eliminar_autor(request, nombre_autor):
     autor_eliminar = BusquedaFiltrada.objects.get(nombre_autor=nombre_autor)
     autor_eliminar.delete()
 
-    messages.info(request, f"El autor {autor_eliminar} fue eliminado")
+    messages.info(request, f"El autor {nombre_autor} fue eliminado")
 
     return redirect("AppCargar")
 
@@ -63,12 +63,12 @@ def busqueda_libro_post(request):
 
     return render(request, "Apps/busqueda.html", contexto)
 
-
+@login_required
 def buscar_formulario(request):
 
     contexto = {
         'form': BusquedaLibroForm(),
-        'titulo_form': 'Buscar Libro',
+        'nombre_form': 'Buscar Libro',
         'boton_envio': 'Buscar'
     }
 
