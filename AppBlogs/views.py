@@ -8,6 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 
+def about(request):
+    return render(request, 'Apps/about.html')
+
 
 def editar(request, nombre_libro):
     libro_editar = BusquedaFiltrada.objects.get(nombre_libro=nombre_libro)
@@ -26,13 +29,13 @@ def editar(request, nombre_libro):
             except django.db.utils.IntegrityError:
                 messages.error(request, "la modificacion fallo por que el libro esta repedito")
 
-            return redirect('AppCargar')
+            return redirect('AppBusqueda')
 
     contexto = {
         'form': BusquedaLibroForm(
             initial={
                 "nombre_libro": libro_editar.nombre_libro,
-                "nombre_autor": libro_editar.nombre_autor,
+                "nombre_autor": libro_editar.nombre_autor
             }
         ),
         'nombre_form': 'Formulario',
@@ -48,23 +51,23 @@ def eliminar_autor(request, nombre_autor):
 
     messages.info(request, f"El autor {nombre_autor} fue eliminado")
 
-    return redirect("AppCargar")
+    return redirect('AppBusqueda')
 
 
-def busqueda_libro_post(request):
-
-    nombre_libro = request.GET.get('nombre_libro')
-
-    buscar = BusquedaFiltrada.objects.filter(nombre_libro__icontains=nombre_libro)
-
-    contexto = {
-        'buscar': buscar
-     }
-
-    return render(request, "Apps/busqueda.html", contexto)
-
-@login_required
 def buscar_formulario(request):
+
+    if request.method == "POST":
+        mi_formulario = BusquedaLibroForm(request.POST)
+
+        if mi_formulario.is_valid():
+        
+            data = mi_formulario.cleaned_data
+
+            buscar = BusquedaFiltrada(nombre_libro=data.get('nombre_libro'), nombre_autor=data.get('nombre_autor'))
+            
+            buscar.save()
+
+            return redirect('AppBusqueda')
 
     contexto = {
         'form': BusquedaLibroForm(),
@@ -72,7 +75,18 @@ def buscar_formulario(request):
         'boton_envio': 'Buscar'
     }
 
-    return render(request, 'Apps/busqueda_libro.html', contexto)
+    return render(request, "base_formulario.html", contexto)
+
+@login_required
+def busqueda(request):
+
+    contexto = {
+        'form': BusquedaLibroForm(),
+        'nombre_form': 'Buscar Libro',
+        'boton_envio': 'Buscar'
+    }
+
+    return render(request, 'Apps/busqueda.html', contexto)
 
 @login_required
 def cargar_formulario(request):
@@ -88,7 +102,7 @@ def cargar_formulario(request):
             
             libro.save()
 
-            return redirect('AppCargar')
+            return redirect('AppCargarForm')
 
     contexto = {
         'form': BusquedaLibroForm(),

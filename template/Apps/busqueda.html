@@ -1,19 +1,22 @@
 {% extends 'index.html' %}
 
 {% block title %}
-Buscar
+Cargar
 {% endblock %}
 
 {% block inicio %}
 
-    {% for cargadas in buscar %}
+    {% for i in object_list %}
 
-        {{ cargadas.nombre_libro }}
+        Nombre del libro: {{ i.nombre_libro }}
+        <br>
+        Nombre del autor: {{ i.nombre_autor }}
+        <a href="{% url 'AppEliminarAutor' i.nombre_autor %}">-X-</a>
+        <a href="{% url 'AppEditarLibro' i.nombre_libro %}"> Editar</a>
         <br>
         <br>
 
     {% endfor %}
 
 {% endblock %}
-
 
