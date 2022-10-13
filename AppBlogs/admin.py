@@ -1,5 +1,5 @@
 from django.contrib import admin
-from AppBlogs.models import Blogs, Busqueda, BusquedaFiltrada
+from AppBlogs.models import *
 
 admin.site.register(Blogs)
 admin.site.register(Busqueda)

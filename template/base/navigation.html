@@ -1,8 +1,8 @@
 <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
         <a class="navbar-brand" href="{% url 'MiAppInicio' %}">Inicio</a>
-        <a class="navbar-brand" href="{% url 'AppCargar' %}">Busqueda</a>
-        <a class="navbar-brand" href="{% url 'AppCargarForm' %}">Cargar</a>
+        <a class="navbar-brand" href="{% url 'AppCargar' %}">Libros</a>
+        <a class="navbar-brand" href="{% url 'AppCargarForm' %}">Cargar Libro</a>
         {% if user.is_authenticated %}
             <img height="80px" src="{{ user.avatar.imagen.url }}" alt="">
             <h5>User: {{ user.get_username }}</h5>

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'AppBlogs',
     'UserBlog',
     "whitenoise.runserver_nostatic",
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +140,5 @@ DATABASES['default'].update(db_from_env)
 
 STATIC_ROOT = BASE_DIR / "static"
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'staticfiles'),)
+
+CKEDITOR_UPLOAD_PATH = "uploads/"

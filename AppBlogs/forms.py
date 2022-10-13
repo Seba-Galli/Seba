@@ -14,9 +14,11 @@ class CargarForm(forms.Form):
     autor = forms.CharField(max_length=40)
     email = forms.CharField(max_length=40)
 
-class BusquedaLibroForm(forms.Form):
-    nombre_libro = forms.CharField(max_length=20)
 
 class BusquedaLibroForm(forms.Form):
     nombre_libro = forms.CharField(max_length=20)
     nombre_autor = forms.CharField(max_length=20)
+    fecha = forms.DateField()
+
+
+

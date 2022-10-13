@@ -1,4 +1,7 @@
+
+from distutils.command import *
 from django.db import models
+from ckeditor.fields import RichTextField
 
 class Blogs(models.Model):
     titulo = models.CharField(max_length=20)
@@ -19,4 +22,19 @@ class Busqueda(models.Model):
 
 class BusquedaFiltrada(models.Model):
     nombre_libro = models.CharField(max_length=20)
-    nombre_autor = models.CharField(max_length=20)
+    nombre_autor = RichTextField(max_length=100)
+    imagen = models.ImageField(upload_to="imagenes", null=True)
+    fecha = models.DateTimeField(auto_now_add=True, null=True)
+
+class Musica(models.Model):
+    cancion = models.CharField(max_length=20)
+    album = models.CharField(max_length=20)
+    artista = models.CharField(max_length=20)
+    comentarios = models.CharField(max_length=80)
+    premios = models.CharField(max_length=40)
+
+class Futbol(models.Model):
+    jugador = models.CharField(max_length=20)
+    equipo = models.CharField(max_length=20)
+    titulos = models.CharField(max_length=40)
+    nacionalidad = models.CharField(max_length=20)

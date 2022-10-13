@@ -53,7 +53,7 @@ def eliminar_autor(request, nombre_autor):
 
     return redirect('AppBusqueda')
 
-
+@login_required
 def buscar_formulario(request):
 
     if request.method == "POST":
@@ -63,7 +63,7 @@ def buscar_formulario(request):
         
             data = mi_formulario.cleaned_data
 
-            buscar = BusquedaFiltrada(nombre_libro=data.get('nombre_libro'), nombre_autor=data.get('nombre_autor'))
+            buscar = BusquedaFiltrada(nombre_libro=data.get('nombre_libro'), nombre_autor=data.get('nombre_autor'), fecha=data.get('fecha'))
             
             buscar.save()
 
@@ -98,15 +98,16 @@ def cargar_formulario(request):
         
             data = mi_formulario.cleaned_data
 
-            libro = BusquedaFiltrada(nombre_libro=data.get('nombre_libro'), nombre_autor=data.get('nombre_autor'))
+            libro = BusquedaFiltrada(nombre_libro=data.get('nombre_libro'), nombre_autor=data.get('nombre_autor'), imagen=data.get('imagen'))
             
             libro.save()
 
             return redirect('AppCargarForm')
+            
 
     contexto = {
         'form': BusquedaLibroForm(),
-        'titulo_form': 'Cargar Libro',
+        'nombre_form': 'Cargar Libro',
         'boton_envio': 'Crear'
     }
 
@@ -121,7 +122,7 @@ class CargarList(LoginRequiredMixin, ListView):
     model = BusquedaFiltrada
     template_name = 'Apps/cargar.html'
 
-
+@login_required
 def cargadas(request):
 
     cargar = BusquedaFiltrada.objects.all()
