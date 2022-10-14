@@ -16,7 +16,7 @@ def editar(request, nombre_libro):
     libro_editar = BusquedaFiltrada.objects.get(nombre_libro=nombre_libro)
 
     if request.method == 'POST':
-        mi_formulario = BusquedaLibroForm(request.POST)
+        mi_formulario = BusquedaLibroForm(request.POST, request.FILES)
 
         if mi_formulario.is_valid():
 
@@ -24,10 +24,11 @@ def editar(request, nombre_libro):
 
             libro_editar.nombre_libro = data.get('nombre_libro')
             libro_editar.nombre_autor = data.get('nombre_autor')
+            libro_editar.imagen = data.get('imagen')
             try:
                 libro_editar.save()
             except django.db.utils.IntegrityError:
-                messages.error(request, "la modificacion fallo por que el libro esta repedito")
+                messages.error(request, "la modificacion fallo por que el libro esta repetido")
 
             return redirect('AppBusqueda')
 
@@ -35,7 +36,8 @@ def editar(request, nombre_libro):
         'form': BusquedaLibroForm(
             initial={
                 "nombre_libro": libro_editar.nombre_libro,
-                "nombre_autor": libro_editar.nombre_autor
+                "nombre_autor": libro_editar.nombre_autor,
+                "imagen": libro_editar.imagen,
             }
         ),
         'nombre_form': 'Formulario',
@@ -57,13 +59,13 @@ def eliminar_autor(request, nombre_autor):
 def buscar_formulario(request):
 
     if request.method == "POST":
-        mi_formulario = BusquedaLibroForm(request.POST)
+        mi_formulario = BusquedaLibroForm(request.POST, request.FILES)
 
         if mi_formulario.is_valid():
         
             data = mi_formulario.cleaned_data
 
-            buscar = BusquedaFiltrada(nombre_libro=data.get('nombre_libro'), nombre_autor=data.get('nombre_autor'), fecha=data.get('fecha'))
+            buscar = BusquedaFiltrada(nombre_libro=data.get('nombre_libro'), nombre_autor=data.get('nombre_autor'), imagen=data.get('imagen'), fecha=data.get('fecha'))
             
             buscar.save()
 
@@ -92,7 +94,7 @@ def busqueda(request):
 def cargar_formulario(request):
 
     if request.method == "POST":
-        mi_formulario = BusquedaLibroForm(request.POST)
+        mi_formulario = BusquedaLibroForm(request.POST, request.FILES)
 
         if mi_formulario.is_valid():
         

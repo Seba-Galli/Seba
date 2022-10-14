@@ -1,7 +1,10 @@
 
+from datetime import date, datetime
 from distutils.command import *
 from django.db import models
 from ckeditor.fields import RichTextField
+from tkinter import *
+from tkcalendar import *
 
 class Blogs(models.Model):
     titulo = models.CharField(max_length=20)
@@ -22,9 +25,9 @@ class Busqueda(models.Model):
 
 class BusquedaFiltrada(models.Model):
     nombre_libro = models.CharField(max_length=20)
-    nombre_autor = RichTextField(max_length=100)
+    nombre_autor = RichTextField(max_length=400)
     imagen = models.ImageField(upload_to="imagenes", null=True)
-    fecha = models.DateTimeField(auto_now_add=True, null=True)
+    fecha = models.DateTimeField (default = datetime.now, blank = True)
 
 class Musica(models.Model):
     cancion = models.CharField(max_length=20)

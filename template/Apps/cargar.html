@@ -11,6 +11,11 @@ Cargar
         Nombre del libro: {{ i.nombre_libro }}
         <br>
         Nombre del autor: {{ i.nombre_autor }}
+        <br>
+        Imagen: {{ i.imagen}}
+        <br>
+        Fecha: {{ i.fecha}}
+        <br>
         <a href="{% url 'AppEliminarAutor' i.nombre_autor %}">-X-</a>
         <a href="{% url 'AppEditarLibro' i.nombre_libro %}"> Editar</a>
         <br>
