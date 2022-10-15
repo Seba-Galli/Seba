@@ -3,7 +3,6 @@ from datetime import date, datetime
 from distutils.command import *
 from django.db import models
 from ckeditor.fields import RichTextField
-from tkinter import *
 from tkcalendar import *
 
 class Blogs(models.Model):
