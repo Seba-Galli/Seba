@@ -1,9 +1,8 @@
 
-from datetime import date, datetime
+from datetime import datetime
 from distutils.command import *
 from django.db import models
 from ckeditor.fields import RichTextField
-from tkcalendar import *
 
 class Blogs(models.Model):
     titulo = models.CharField(max_length=20)
