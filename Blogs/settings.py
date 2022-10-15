@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0e&^cr!m-v&4=ps4##aog$991b2j5lc2rule7=@^phcf0n5pi7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['sleepy-garden-34452.herokuapp.com']
 
 
 # Application definition
@@ -144,7 +144,5 @@ DATABASES['default'].update(db_from_env)
 
 STATIC_ROOT = BASE_DIR / "static"
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'staticfiles'),)
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
